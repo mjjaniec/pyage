@@ -45,7 +45,18 @@ class PermutationGenotype(object):
         self.fitness = None
 
     def __str__(self):
-        return "PG[{0}, fitness: {1}]".format(self.permutation, self.fitness)
+        string = "PG[{0}, fitness: {1}]".format(self.permutation, self.fitness)
+        return string if self.valid() else "INVALID!: " + string
 
     def __repr__(self):
         return self.__str__()
+
+    def valid(self):
+        """:rtype: bool"""
+        r = [0] * len(self.permutation)
+        for x in self.permutation:
+            r[x] += 1
+        return all(map(lambda q: q == 1, r))
+
+
+

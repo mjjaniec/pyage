@@ -27,11 +27,7 @@ class TestFlowShopEvaluation(TestCase):
 
     def test_compute_time_table(self):
         evaluation = FlowShopEvaluation(TestFlowShopEvaluation.time_matrix)
-        result_table = [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]
-        ]
-        evaluation.compute_makespan([0, 1, 2], result_table)
+        makespan, result_table = evaluation.compute_makespan([0, 1, 2], True)
+        self.assertEqual(makespan, 18)
         self.assertListEqual(result_table, TestFlowShopEvaluation.time_table)
 

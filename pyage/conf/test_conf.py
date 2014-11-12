@@ -2,11 +2,10 @@
 import logging
 
 from pyage.core import address
-
 from pyage.core.agent.agent import generate_agents, Agent
 from pyage.core.locator import RandomLocator
 from pyage.core.migration import NoMigration
-from pyage.core.statistics import NoStatistics
+from pyage.core.stats.statistics import NoStatistics
 from pyage.core.stop_condition import StepLimitStopCondition
 from pyage.solutions.evolution.crossover import AverageFloatCrossover
 from pyage.solutions.evolution.evaluation import FloatRastriginEvaluation

@@ -77,6 +77,14 @@ class PermutationInitializer(Operator):
         return ret
 
 
+def flow_shop_agents_initializer(size, length, energy):
+    agents = {}
+    for i in xrange(size):
+        agent = EmasAgent(PermutationGenotype(PermutationInitializer.gen_permutation(length)), energy)
+        agents[agent.get_address()] = agent
+    return agents
+
+
 def makota_agents_initializer(size, energy):
     agents = {}
     for i in xrange(size):
@@ -97,4 +105,3 @@ def emas_initializer(energy=10, size=100, lowerbound=0.0, upperbound=1.0):
         agent = EmasAgent(PointGenotype(uniform(lowerbound, upperbound), uniform(lowerbound, upperbound)), energy)
         agents[agent.get_address()] = agent
     return agents
-

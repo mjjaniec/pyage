@@ -1,6 +1,7 @@
 # coding=utf-8
 import logging
 import os
+
 import Pyro4
 
 from pyage.core import address
@@ -9,7 +10,7 @@ from pyage.core.agent.aggregate import AggregateAgent
 from pyage.core.emas import EmasService
 from pyage.core.locator import  RowLocator
 from pyage.core.migration import Pyro4Migration
-from pyage.core.statistics import  TimeStatistics
+from pyage.core.stats.statistics import  TimeStatistics
 from pyage.core.stop_condition import StepLimitStopCondition
 from pyage.solutions.evolution.crossover import   SinglePointCrossover
 from pyage.solutions.evolution.evaluation import  FloatRastriginEvaluation

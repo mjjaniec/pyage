@@ -97,20 +97,24 @@ class FlowShopEvaluation(Operator):
     def process(self, population):
         """ :type population: list of PermutationGenotype """
         for individual in population:
-            individual.fitness = self.max_time - FlowShopEvaluation\
-                .compute_makespan(individual.permutation)
+            individual.fitness = - self.compute_makespan(individual.permutation)
 
-    def compute_makespan(self, permutation, solution_matrix=None):
+    def compute_makespan(self, permutation, compute_solution_matrix=False):
         """
         :param permutation: order of processing
         :type permutation: list of float
         :param time_matrix: time_matrix[processor][job]
         :type time_matrix: list of list
-        :param solution_matrix: matrix - for solution
-        :type solution_matrix: list of list
         :return: makespan for processing in given order (permutation)
         :rtype: float
         """
+
+        csm = compute_solution_matrix
+        solution_matrix = None
+        if csm:
+            solution_matrix = []
+            for _ in xrange(len(self.time_matrix)):
+                solution_matrix.append([None]*len(permutation))
 
         back = []
         for i in xrange(len(self.time_matrix) + 1):
@@ -118,9 +122,8 @@ class FlowShopEvaluation(Operator):
         for job in xrange(len(permutation)):
             for process in xrange(len(self.time_matrix)):
                 back[process+1] = max(back[process+1], back[process]) + self.time_matrix[process][permutation[job]]
-                if solution_matrix is not None:
+                if csm:
                     solution_matrix[process][job] = back[process+1]
-
-        return back[-1]
-
+        ret = back[-1]
+        return ret if not csm else (ret, solution_matrix)
 

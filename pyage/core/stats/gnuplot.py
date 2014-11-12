@@ -1,6 +1,8 @@
 import logging
 import time
-from pyage.core.statistics import Statistics
+
+from pyage.core.stats.statistics import Statistics
+
 
 logger = logging.getLogger(__name__)
 

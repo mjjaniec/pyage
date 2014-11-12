@@ -72,10 +72,9 @@ class PermutationMutation(AbstractMutation):
     def do_mutate(permutation):
         """ :param permutation: list of int """
         length = len(permutation)
-        i = random.randint(0, length)
-        j = random.randint(0, length)
-        permutation[i], permutation[j] = permutation[j], permutation[j]
-
+        i = random.randint(0, length - 1)
+        j = random.randint(0, length - 1)
+        permutation[i], permutation[j] = permutation[j], permutation[i]
 
 
 

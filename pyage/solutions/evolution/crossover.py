@@ -45,7 +45,7 @@ class SinglePointCrossover(AbstractCrossover):
 
 
 class PermutationCrossover(AbstractCrossover):
-    def __int__(self, size=100):
+    def __init__(self, size=100):
         super(PermutationCrossover, self).__init__(PermutationGenotype, size)
 
     def cross(self, p1, p2):
@@ -61,6 +61,10 @@ class PermutationCrossover(AbstractCrossover):
         for (i, j) in difference:
             if utils.rand_bool():
                 offspring.permutation[i], offspring.permutation[j] = offspring.permutation[j], offspring.permutation[i]
+
+        # p1o = PermutationCrossover.compute_difference(p1.permutation, offspring.permutation)
+        # p2o = PermutationCrossover.compute_difference(p2.permutation, offspring.permutation)
+        # print (len(difference), len(p1o), len(p2o))
         return offspring
 
     @staticmethod
@@ -80,7 +84,7 @@ class PermutationCrossover(AbstractCrossover):
             reversed[p1[i]] = i
 
         for i in xrange(len(p1)):
-            if not visited[i]: # start a cycle
+            if not visited[i]:  # start a cycle
                 prev = i
                 while not visited[i]:
                     visited[i] = True

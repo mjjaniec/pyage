@@ -1,12 +1,15 @@
 import logging
 import os
 import urllib2
-import Pyro4
 import time
 import sys
+
+import Pyro4
+
 from pyage.core.inject import Inject, InjectOptional
-from pyage.core.statistics import Statistics
+from pyage.core.stats.statistics import Statistics
 from pyage.core.workplace import WORKPLACE
+
 
 logger = logging.getLogger(__name__)
 

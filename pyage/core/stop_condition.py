@@ -1,11 +1,22 @@
 import logging
 import Pyro4
+import time
 from pyage.core.inject import Inject
 from pyage.core.workplace import WORKPLACE
 
 class StopCondition(object):
     def should_stop(self, workplace):
         raise NotImplementedError()
+
+
+class TimeLimitStopCondition(StopCondition):
+    def __init__(self, seconds):
+        super(TimeLimitStopCondition, self).__init__()
+        self.seconds = seconds
+        self.time_0 = time.time()
+
+    def should_stop(self, workplace):
+        return time.time() - self.time_0 > self.seconds
 
 
 class StepLimitStopCondition(StopCondition):

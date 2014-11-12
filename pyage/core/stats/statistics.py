@@ -16,6 +16,27 @@ class Statistics(object):
         raise NotImplementedError()
 
 
+class WithGenomeStatistics(Statistics):
+    def __init__(self, file_name):
+        self.output = open(file_name, 'w')
+        self.time = time.time()
+
+    def update(self, step, agents):
+        t = time.time() - self.time
+        self.best = agents[0].get_best_genotype()
+
+        for agent in agents:
+            if agent.get_best_genotype().fitness > self.best.fitness:
+                self.best = agent.get_best_genotype()
+
+        self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
+                          .format(step, t, self.best.fitness, self.best.permutation))
+
+    def summarize(self, agents):
+        self.output.flush()
+        self.output.close()
+
+
 class SimpleStatistics(Statistics):
     def __init__(self, plot_file_name='plot.png'):
         self.history = []
@@ -97,4 +118,3 @@ class NoStatistics(Statistics):
 
     def summarize(self, agents):
         pass
-

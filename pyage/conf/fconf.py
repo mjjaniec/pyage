@@ -1,19 +1,21 @@
 # coding=utf-8
 import logging
 import os
+
 import Pyro4
 
 from pyage.core import address
 from pyage.core.agent import   generate_agents, Agent
 from pyage.core.locator import Pyro4Locator
 from pyage.core.migration import  NoMigration
-from pyage.core.statistics import SimpleStatistics
+from pyage.core.stats.statistics import SimpleStatistics
 from pyage.core.stop_condition import StepLimitStopCondition
 from pyage.solutions.evolution.crossover import  AverageFloatCrossover
 from pyage.solutions.evolution.evaluation import  FloatRastriginEvaluation
 from pyage.solutions.evolution.initializer import  FloatInitializer
 from pyage.solutions.evolution.mutation import  UniformFloatMutation
 from pyage.solutions.evolution.selection import TournamentSelection
+
 
 logger = logging.getLogger(__name__)
 
