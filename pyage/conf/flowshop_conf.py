@@ -10,7 +10,7 @@ from pyage.core.emas import EmasService
 from pyage.core.locator import GridLocator
 from pyage.core.migration import ParentMigration
 from pyage.core.stats.statistics import WithGenomeStatistics
-from pyage.core.stop_condition import StepLimitStopCondition, TimeLimitStopCondition
+from pyage.core.stop_condition import TimeLimitStopCondition
 from pyage.solutions.evolution.crossover import PermutationCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
 from pyage.solutions.evolution.initializer import flow_shop_agents_initializer, PermutationInitializer
@@ -23,7 +23,7 @@ time_matrix = [
     [66, 58, 31, 68, 78, 91, 13, 59, 49, 85, 85,  9, 39, 41, 56, 40, 54, 77, 51, 31],
     [58, 56, 20, 85, 53, 35, 53, 41, 69, 13, 86, 72,  8, 49, 47, 87, 58, 18, 68, 28]
 ]
-agents_count = 15
+agents_count = 50
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ transferred_energy = lambda: 40
 
 evaluation = lambda: FlowShopEvaluation(time_matrix)
 crossover = lambda: PermutationCrossover()
-mutation = lambda: PermutationMutation(1)
+mutation = lambda: PermutationMutation(2)
 initializer = lambda: PermutationInitializer(len(time_matrix[0]))
 
 address_provider = address.SequenceAddressProvider
@@ -71,6 +71,7 @@ class FlowShopStatistics(WithGenomeStatistics):
                 self.best = agent.get_best_genotype()
 
         if self.lastBest is None or self.lastBest.fitness < self.best.fitness:
+            print -self.best.fitness
             self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
                           .format(step, t, self.best.fitness, self.best.permutation))
 
