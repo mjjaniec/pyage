@@ -1,13 +1,15 @@
 # coding=utf-8
 import logging
+import os
+import Pyro4
 
 from pyage.core import address
 
 from pyage.core.agent.agent import unnamed_agents
 from pyage.core.agent.aggregate import AggregateAgent
 from pyage.core.emas import EmasService
-from pyage.core.locator import GridLocator
-from pyage.core.migration import ParentMigration
+from pyage.core.locator import GridLocator, RandomLocator
+from pyage.core.migration import ParentMigration, Pyro4Migration
 from pyage.core.stats.statistics import FlowShopStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
 from pyage.solutions.evolution.crossover import PermutationCrossover
@@ -49,7 +51,11 @@ initializer = lambda: PermutationInitializer(len(time_matrix[0]))
 
 address_provider = address.SequenceAddressProvider
 
-migration = ParentMigration
-locator = GridLocator
+print os.environ['PYTHONPATH']
+ns_hostname = lambda: os.environ['NS_HOSTNAME']
+pyro_daemon = Pyro4.Daemon()
+daemon = lambda: pyro_daemon
+migration = Pyro4Migration
+locator = RandomLocator
 
 stats = lambda: FlowShopStatistics('out_%s_pyage.txt' % __name__, time_matrix, evaluation())
