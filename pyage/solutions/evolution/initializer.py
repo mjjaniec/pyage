@@ -3,6 +3,7 @@ from pyage.core.emas import EmasAgent
 from pyage.core.operator import Operator
 from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
 from pyage.utils import utils
+from random import randint
 
 
 class PointInitializer(Operator):
