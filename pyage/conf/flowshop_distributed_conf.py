@@ -51,7 +51,6 @@ initializer = lambda: PermutationInitializer(len(time_matrix[0]))
 
 address_provider = address.SequenceAddressProvider
 
-print os.environ['PYTHONPATH']
 ns_hostname = lambda: os.environ['NS_HOSTNAME']
 pyro_daemon = Pyro4.Daemon()
 daemon = lambda: pyro_daemon
