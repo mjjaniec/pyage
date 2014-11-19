@@ -31,7 +31,7 @@ class Pyro4Migration(Migration):
 
     def _get_random_aggregate(self, agent):
         logger.error(self.ns_hostname)
-        ns = Pyro4.locateNS(self.ns_hostname)
+        ns = Pyro4.locateNS()
         agents = ns.list(AGENT)
         logger.debug(agents)
         del agents[AGENT + "." + agent.parent.address]

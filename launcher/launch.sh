@@ -20,7 +20,8 @@ pyro_port=9090
 ssh $master "fuser -k $pyro_port/tcp 1&>/dev/null"
 
 #run pyro server on master
-ssh $master "daemon -- python -Wignore -m Pyro4.naming -n $master_ip -p $pyro_port"
+ssh $master "export PYRO_HMAC_KEY='shared_secret_key_ala_makota' \
+            && daemon -- python -Wignore -m Pyro4.naming -n $master_ip -p $pyro_port"
 
 #run pyage on every machine
 for host in `cat hosts`; do
@@ -29,6 +30,7 @@ for host in `cat hosts`; do
         && export NS_HOSTNAME=$master_ip \
         && export PYRO_HOST=$local_ip \
         && export PYTHONPATH=\$HOME/pyage \
+        && export PYRO_HMAC_KEY='shared_secret_key_ala_makota' \
         && cd \$HOME/pyage/logs \
         && python \$HOME/pyage/pyage/core/bootstrap.py pyage.conf.flowshop_distributed_conf"
 done
