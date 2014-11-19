@@ -83,7 +83,7 @@ class Workplace(Addressable):
         if hasattr(self, "ns_hostname") and hasattr(self, "daemon"):
             uri = self.daemon.register(self)
             try:
-                ns = locateNS(self.ns_hostname)
+                ns = locateNS()
                 ns.register(WORKPLACE + '.' + self.address, uri)
                 logger.debug(ns.list())
                 self.publish_agents()
@@ -94,7 +94,7 @@ class Workplace(Addressable):
         for agent in self.__agents.values():
             try:
                 uri = self.daemon.register(agent)
-                ns = locateNS(self.ns_hostname)
+                ns = locateNS()
                 ns.register('%s.%s' % (AGENT, agent.address), uri)
                 logger.debug(ns.list())
             except:

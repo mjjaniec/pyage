@@ -90,9 +90,8 @@ class FlowShopEvaluation(Operator):
         :type time_matrix: list of list
         :param time_matrix: time_matrix[processor][job]
         """
-        super(FlowShopEvaluation, self).__init__(PermutationGenotype)
+        super(FlowShopEvaluation, self).__init__(PermutationGenotype.__name__)
         self.time_matrix = time_matrix
-        self.max_time = sum(sum(row) for row in time_matrix)
 
     def process(self, population):
         """ :type population: list of PermutationGenotype """

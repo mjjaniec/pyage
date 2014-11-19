@@ -17,7 +17,6 @@ class TestFlowShopEvaluation(TestCase):
 
     def test_compute_fitness(self):
         evaluation = FlowShopEvaluation(TestFlowShopEvaluation.time_matrix)
-        self.assertEqual(evaluation.max_time, 1 + 2 + 5 + 4 + 5 + 1 + 5 + 5 + 3)
         self.assertEqual(evaluation.compute_makespan([0, 1, 2]), 18)
         self.assertEqual(evaluation.compute_makespan([0, 2, 1]), 18)
         self.assertEqual(evaluation.compute_makespan([1, 2, 0]), 20)

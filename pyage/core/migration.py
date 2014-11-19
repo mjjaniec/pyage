@@ -25,8 +25,8 @@ class Pyro4Migration(Migration):
                 logger.info(aggregate.get_address())
                 aggregate.add_agent(agent.parent.remove_agent(agent))
                 return True
-        except:
-            logging.exception("")
+        except Exception as e:
+            logging.exception(e)
         return False
 
     def _get_random_aggregate(self, agent):
@@ -48,8 +48,8 @@ class ParentMigration(Migration):
                 logger.debug(aggregate.get_address())
                 aggregate.add_agent(agent.parent.remove_agent(agent))
                 return True
-        except:
-            logging.exception("")
+        except Exception as e:
+            logging.exception(e)
         return False
 
     def __get_random_aggregate(self, agent):

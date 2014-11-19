@@ -46,7 +46,7 @@ class SinglePointCrossover(AbstractCrossover):
 
 class PermutationCrossover(AbstractCrossover):
     def __init__(self, size=100):
-        super(PermutationCrossover, self).__init__(PermutationGenotype, size)
+        super(PermutationCrossover, self).__init__(PermutationGenotype.__name__, size)
 
     def cross(self, p1, p2):
         """
