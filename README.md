@@ -2,12 +2,12 @@
 
 ## Team
 
-Michał Janiec <mjjaniec@gmail.com>
+Michał Janiec
 
-Wojciech Krzystek <wojciech.krzystek@gmail.com>
+Wojciech Krzystek
 
 ## Problem flow shop
-http://www.flowshop.mfbiz.pl/sformulowanie-problemu.php
+<http://www.flowshop.mfbiz.pl/sformulowanie-problemu.php>
 
 ### Wejscie algorytmu:
 * P - liczba procesorów (wynika z macierzy - patrz niżej)
