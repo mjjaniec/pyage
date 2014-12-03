@@ -1,5 +1,5 @@
 #!/bin/bash
-
+alias ssh='ssh -i IO.pem'
 
 function get_ip {
     result=`ssh $1 "ifconfig wlan0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"`
@@ -7,9 +7,9 @@ function get_ip {
 }
 
 ##update on all hosts
-#for host in `cat hosts`; do
-#    ssh $host "cd pyage && git pull && git checkout distributed_launcher"
-#done
+for host in `cat hosts`; do
+    ssh $host "cd pyage && git pull && git checkout distributed_launcher"
+done
 
 #first host would be the master
 master=`cat hosts | head -n 1`
