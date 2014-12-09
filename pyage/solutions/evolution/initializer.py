@@ -1,9 +1,11 @@
+import random
 from random import uniform
+from random import randint
+
 from pyage.core.emas import EmasAgent
 from pyage.core.operator import Operator
 from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
 from pyage.utils import utils
-from random import randint
 
 
 class PointInitializer(Operator):
@@ -71,11 +73,9 @@ class PermutationInitializer(Operator):
         """ generate random permutation
         :type length: int
         :rtype: list of int"""
-        ret = [i for i in xrange(length)]
-        for i in xrange(length):
-            j = randint(0, i)
-            ret[i], ret[j] = ret[j], ret[i]
-        return ret
+        permutation = range(length)
+        random.shuffle(permutation)
+        return permutation
 
 
 def flow_shop_agents_initializer(size, length, energy):
@@ -93,12 +93,14 @@ def makota_agents_initializer(size, energy):
         agents[agent.get_address()] = agent
     return agents
 
-def float_emas_initializer(dims=2,energy=10, size=100, lowerbound=0.0, upperbound=1.0):
+
+def float_emas_initializer(dims=2, energy=10, size=100, lowerbound=0.0, upperbound=1.0):
     agents = {}
     for i in range(size):
         agent = EmasAgent(FloatGenotype([uniform(lowerbound, upperbound) for _ in range(dims)]), energy)
         agents[agent.get_address()] = agent
     return agents
+
 
 def emas_initializer(energy=10, size=100, lowerbound=0.0, upperbound=1.0):
     agents = {}
