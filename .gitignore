@@ -36,3 +36,7 @@ nosetests.xml
 
 # pycharm
 .idea
+
+# pyage logs
+pyage/pyage-*.log
+pyage/out_pyage.conf.flowshop_conf_pyage.txt
