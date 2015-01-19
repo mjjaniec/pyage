@@ -1,5 +1,7 @@
 import random
+
 from pyage.utils import utils
+
 from pyage.core.operator import Operator
 from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
 
@@ -35,6 +37,18 @@ class UniformFloatMutation(AbstractMutation):
         genotype.genes[index] += random.uniform(-self.radius, self.radius)
 
 
+class NormalMutation(object):
+    def __init__(self, probability=0.01, radius=0.1):
+        super(NormalMutation, self).__init__()
+        self.probability = probability
+        self.radius = radius
+
+    def mutate(self, genotype):
+        for index in range(len(genotype.genes)):
+            if random.random() < self.probability:
+                genotype.genes[index] = random.gauss(genotype.genes[index], self.radius)
+
+
 class StringMutation(AbstractMutation):
     def __init__(self, probability=0.1):
         super(StringMutation, self).__init__(StringGenotype, probability)
@@ -45,13 +59,13 @@ class StringMutation(AbstractMutation):
 
     @staticmethod
     def do_mutate(string):
-        index = random.randint(0, len(string) -1)
+        index = random.randint(0, len(string) - 1)
         if random.random() < 0.6:
             # change one letter
-            return string[:index] + utils.rand_letter() + string[index+1:]
+            return string[:index] + utils.rand_letter() + string[index + 1:]
         elif random.random() < 0.5 and len(string) > 1:
             # remove one letter
-            return string[:index] + string[index+1:]
+            return string[:index] + string[index + 1:]
         else:
             # add one letter
             return string[:index] + utils.rand_letter() + string[index:]

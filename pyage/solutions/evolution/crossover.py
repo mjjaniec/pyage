@@ -1,5 +1,7 @@
 import random
+
 from pyage.core.operator import Operator
+
 from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
 from pyage.utils import utils
 
@@ -34,14 +36,24 @@ class AverageFloatCrossover(AbstractCrossover):
         genotype = FloatGenotype([sum(p) / 2.0 for p in zip(p1.genes, p2.genes)])
         return genotype
 
+
 class SinglePointCrossover(AbstractCrossover):
     def __init__(self, size=100):
         super(SinglePointCrossover, self).__init__(FloatGenotype, size)
 
-
     def cross(self, p1, p2):
         crossingPoint = random.randint(1, len(p1.genes))
         return FloatGenotype(p1.genes[:crossingPoint] + p2.genes[crossingPoint:])
+
+
+class UniformCrossover(AbstractCrossover):
+    def __init__(self, size=100, probability=0.5):
+        super(UniformCrossover, self).__init__(FloatGenotype, size)
+        self.probability = probability
+
+    def cross(self, p1, p2):
+        return FloatGenotype([p1.genes[i] if random.random() < self.probability else p2.genes[i]
+                              for i in range(len(p1.genes))])
 
 
 class PermutationCrossover(AbstractCrossover):
@@ -57,7 +69,7 @@ class PermutationCrossover(AbstractCrossover):
         difference = PermutationCrossover.compute_difference(p1.permutation, p2.permutation)
         offspring = PermutationGenotype(list(p1.permutation))
 
-        #execute about a half of transformation from p1, to p2
+        # execute about a half of transformation from p1, to p2
         for (i, j) in difference:
             if utils.rand_bool():
                 offspring.permutation[i], offspring.permutation[j] = offspring.permutation[j], offspring.permutation[i]
@@ -91,7 +103,7 @@ class PermutationCrossover(AbstractCrossover):
                     i = reversed[p2[i]]
                     ret.append((prev, i))
                     prev = i
-                #last element is not necessary (forced by previous entries)
+                # last element is not necessary (forced by previous entries)
                 ret.pop()
         return ret
 
