@@ -5,7 +5,7 @@ from pyage.solutions.evolution.genotype import PermutationGenotype
 
 
 class Test_FirstHalfSwapsCrossover(TestCase):
-    def test_compute_difference_simple(self):
+    def test_FirstHalfSwapsCrossover(self):
         pi = PermutationGenotype([1, 2, 3, 4, 5, 6, 7])
         p1 = PermutationGenotype([2, 3, 5, 1, 4, 7, 6])
         # swaps: [(0, 1), (1, 2), (2, 4), (4, 3), (5, 6)]
