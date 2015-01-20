@@ -9,7 +9,7 @@ from pyage.core.locator import RandomLocator
 from pyage.core.migration import ParentMigration
 from pyage.core.stats.statistics import FlowShopStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
-from pyage.solutions.evolution.crossover.permutation import PermutationCrossover
+from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
 from pyage.solutions.evolution.initializer import flow_shop_agents_initializer, PermutationInitializer
 from pyage.solutions.evolution.mutation import PermutationMutation

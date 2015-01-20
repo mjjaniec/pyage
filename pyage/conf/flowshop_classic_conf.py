@@ -7,7 +7,7 @@ from pyage.core.locator import RandomLocator
 from pyage.core.migration import NoMigration
 from pyage.core.stats.statistics import FlowShopStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
-from pyage.solutions.evolution.crossover.permutation import PermutationCrossover
+from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
 from pyage.solutions.evolution.initializer import PermutationInitializer
 from pyage.solutions.evolution.mutation import PermutationMutation
@@ -29,7 +29,7 @@ stop_condition = lambda: TimeLimitStopCondition(10)
 evaluation = lambda: FlowShopEvaluation(time_matrix())
 initializer = lambda: PermutationInitializer(len(time_matrix()[0]), agent_population)
 operators = lambda: [
-    PermutationCrossover(),
+    FirstHalfSwapsCrossover(),
     PermutationMutation(2),
     evaluation(),
     TournamentSelection(agent_population, agent_population)]
