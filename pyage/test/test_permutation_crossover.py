@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pyage.solutions.evolution.crossover.permutation import PermutationCrossover
+from pyage.solutions.evolution.crossover.permutation import PermutationCrossover, swaps_p1_to_p2
 
 
 class TestPermutationCrossover(TestCase):
@@ -19,20 +19,20 @@ class TestPermutationCrossover(TestCase):
         pt2 = [0, 1, 4, 2, 3]
         pt3 = [1, 0, 4, 2, 3]
 
-        d0 = PermutationCrossover.compute_difference(pid, pid)
+        d0 = swaps_p1_to_p2(pid, pid)
         self.assertListEqual(d0, [])
 
-        d1 = PermutationCrossover.compute_difference(pid, pt1)
+        d1 = swaps_p1_to_p2(pid, pt1)
         # one swap required
         self.assertEqual(len(d1), 1)
         # appalying difference to first list should yield second list
         self.assertListEqual(pt1, TestPermutationCrossover.transform(pid, d1))
 
-        d2 = PermutationCrossover.compute_difference(pid, pt2)
+        d2 = swaps_p1_to_p2(pid, pt2)
         self.assertEqual(len(d2), 2)
         self.assertListEqual(pt2, TestPermutationCrossover.transform(pid, d2))
 
-        d3 = PermutationCrossover.compute_difference(pid, pt3)
+        d3 = swaps_p1_to_p2(pid, pt3)
         self.assertEqual(len(d3), 3)
         self.assertListEqual(pt3, TestPermutationCrossover.transform(pid, d3))
 
@@ -41,25 +41,25 @@ class TestPermutationCrossover(TestCase):
         p2 = [4, 8, 0, 7, 5, 2, 6, 3, 1]
         p3 = [1, 7, 5, 6, 2, 8, 4, 0, 3]
 
-        d0 = PermutationCrossover.compute_difference(p1, p1)
+        d0 = swaps_p1_to_p2(p1, p1)
         # difference between the same list should be empty
         self.assertListEqual(d0, [])
 
-        d1 = PermutationCrossover.compute_difference(p1, p2)
+        d1 = swaps_p1_to_p2(p1, p2)
         # difference should be shorter than lists lengths
         self.assertLess(len(d1), len(p1))
         # appalying difference to first list should yield second list
         self.assertListEqual(p2, TestPermutationCrossover.transform(p1, d1))
 
-        d2 = PermutationCrossover.compute_difference(p2, p1)
+        d2 = swaps_p1_to_p2(p2, p1)
         self.assertLess(len(d2), len(p1))
         self.assertListEqual(p1, TestPermutationCrossover.transform(p2, d2))
 
-        d3 = PermutationCrossover.compute_difference(p1, p3)
+        d3 = swaps_p1_to_p2(p1, p3)
         self.assertLess(len(d3), len(p1))
         self.assertListEqual(p3, TestPermutationCrossover.transform(p1, d3))
 
-        d4 = PermutationCrossover.compute_difference(p3, p2)
+        d4 = swaps_p1_to_p2(p3, p2)
         self.assertLess(len(d4), len(p1))
         self.assertListEqual(p2, TestPermutationCrossover.transform(p3, d4))
 
