@@ -88,24 +88,20 @@ class PermutationCrossover(AbstractCrossover):
         :return: minimal list of swaps necessary to transform p1 into p2
         """
 
-        ret = []
+        result = []
         visited = [False] * len(p1)
-        reversed = [None] * len(p1)
-
-        for i in xrange(len(p1)):
-            reversed[p1[i]] = i
+        position_in_p1 = {p1[i]: i for i in range(len(p1))}
 
         for i in xrange(len(p1)):
             if not visited[i]:  # start a cycle
-                prev = i
                 while not visited[i]:
                     visited[i] = True
-                    i = reversed[p2[i]]
-                    ret.append((prev, i))
-                    prev = i
+                    next = position_in_p1[p2[i]]
+                    result.append((i, next))
+                    i = next
                 # last element is not necessary (forced by previous entries)
-                ret.pop()
-        return ret
+                result.pop()
+        return result
 
 
 class StringCrossover(AbstractCrossover):
