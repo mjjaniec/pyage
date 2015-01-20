@@ -1,6 +1,8 @@
 from math import cos, pi, sin, sqrt
+
 from pyage.core.operator import Operator
-from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
+from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, PermutationGenotype
+
 
 A = 10
 
@@ -56,32 +58,6 @@ class SchwefelEvaluation(Operator):
         for gene in genes:
             sum += -gene * sin(sqrt(abs(gene)))
         return sum
-
-
-class MakotaEvaluation(Operator):
-    def __init__(self):
-        super(MakotaEvaluation, self).__init__(StringGenotype)
-
-    def process(self, population):
-        for genotype in population:
-            genotype.fitness = 1.0 / (1.0 + MakotaEvaluation._distance("mama", genotype.genes))
-
-    @staticmethod
-    def _distance(s1, s2):
-        if len(s1) > len(s2):
-            s1, s2 = s2, s1
-        distances = range(len(s1) + 1)
-        for index2, char2 in enumerate(s2):
-            new_distance = [index2+1]
-            for index1, char1 in enumerate(s1):
-                if char1 == char2:
-                    new_distance.append(distances[index1])
-                else:
-                    new_distance.append(1 + min((distances[index1],
-                                                 distances[index1+1],
-                                                 new_distance[-1])))
-            distances = new_distance
-        return distances[-1]
 
 
 class FlowShopEvaluation(Operator):

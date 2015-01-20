@@ -5,11 +5,11 @@ from pyage.core import address
 from pyage.core.agent.agent import unnamed_agents
 from pyage.core.agent.aggregate import AggregateAgent
 from pyage.core.emas import EmasService
-from pyage.core.locator import GridLocator
+from pyage.core.locator import RandomLocator
 from pyage.core.migration import ParentMigration
 from pyage.core.stats.statistics import FlowShopStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
-from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
+from pyage.solutions.evolution.crossover.permutation import PermutationCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
 from pyage.solutions.evolution.initializer import flow_shop_agents_initializer, PermutationInitializer
 from pyage.solutions.evolution.mutation import PermutationMutation
@@ -22,8 +22,8 @@ time_matrix = [
     [66, 58, 31, 68, 78, 91, 13, 59, 49, 85, 85, 9, 39, 41, 56, 40, 54, 77, 51, 31],
     [58, 56, 20, 85, 53, 35, 53, 41, 69, 13, 86, 72, 8, 49, 47, 87, 58, 18, 68, 28]
 ]
-time_matrix_provider = lambda: time_matrix
 agents_count = 50
+agent_population = 20
 
 logger = lambda: logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ agents = unnamed_agents(agents_count, AggregateAgent)
 
 stop_condition = lambda: TimeLimitStopCondition(10)
 
-aggregated_agents = lambda: flow_shop_agents_initializer(20, len(time_matrix[0]), agents_count)
+aggregated_agents = lambda: flow_shop_agents_initializer(agent_population, len(time_matrix[0]), agents_count)
 
 emas = EmasService
 
@@ -52,6 +52,6 @@ initializer = lambda: PermutationInitializer(len(time_matrix[0]))
 address_provider = address.SequenceAddressProvider
 
 migration = ParentMigration
-locator = GridLocator
+locator = RandomLocator
 
 stats = lambda: FlowShopStatistics('out_%s_pyage.txt' % __name__)

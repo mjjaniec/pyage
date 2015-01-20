@@ -40,7 +40,7 @@ class FloatInitializer(Operator):
 class PermutationInitializer(Operator):
     def __init__(self, length, size=100):
         """:type length: int"""
-        super(PermutationInitializer, self).__init__(PermutationInitializer)
+        super(PermutationInitializer, self).__init__(PermutationGenotype)
         self.size = size
         self.length = length
 

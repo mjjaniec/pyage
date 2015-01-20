@@ -55,7 +55,6 @@ class SimpleStatistics(Statistics):
     def summarize(self, agents):
         try:
             import pylab
-
             logger.debug(self.history)
             logger.debug("best genotype: %s", max(agents, key=lambda a: a.get_fitness).get_best_genotype())
             pylab.yscale('symlog')
@@ -81,7 +80,6 @@ class TimeStatistics(SimpleStatistics):
     def summarize(self, agents):
         try:
             import pylab
-
             pylab.plot(self.times, self.history)
             pylab.xlabel("time (s)")
             pylab.ylabel("fitness")
@@ -143,26 +141,7 @@ class FlowShopStatistics(WithGenomeStatistics):
         if self.lastBest is None or self.lastBest.fitness < self.best.fitness:
             print -self.best.fitness
             self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
-                .format(step, t, self.best.fitness, self.best.permutation))
+                              .format(step, t, self.best.fitness, self.best.permutation))
 
-    @Inject("time_matrix_provider", "evaluation")
     def summarize(self, agents):
-        self.output.write('\n\n===================================================\n\n')
-        self.output.write('Problem:\n')
-        self.print_matrix(self.time_matrix_provider)
-        self.output.write('____________________________________________________\n\n')
-        self.output.write('Best known solution: {0}\n'.format(self.best.permutation))
-        makespan, result = self.evaluation.compute_makespan(self.best.permutation, True)
-
-        self.output.write('Makespan: {0}\n'.format(int(makespan)))
-        self.output.write('Time table:\n')
-        self.print_matrix(result)
-        self.output.flush()
-        self.output.close()
-
-    def print_matrix(self, matrix):
-        for row in matrix:
-            for i in row:
-                val = str(int(i))
-                self.output.write(val + (6 - len(val)) * ' ')
-            self.output.write('\n')
+        pass
