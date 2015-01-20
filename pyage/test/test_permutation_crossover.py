@@ -1,5 +1,6 @@
 from unittest import TestCase
-from pyage.solutions.evolution.crossover import PermutationCrossover
+
+from pyage.solutions.evolution.crossover.permutation import PermutationCrossover
 
 
 class TestPermutationCrossover(TestCase):
@@ -22,9 +23,9 @@ class TestPermutationCrossover(TestCase):
         self.assertListEqual(d0, [])
 
         d1 = PermutationCrossover.compute_difference(pid, pt1)
-        #one swap required
+        # one swap required
         self.assertEqual(len(d1), 1)
-        #appalying difference to first list should yield second list
+        # appalying difference to first list should yield second list
         self.assertListEqual(pt1, TestPermutationCrossover.transform(pid, d1))
 
         d2 = PermutationCrossover.compute_difference(pid, pt2)
@@ -45,9 +46,9 @@ class TestPermutationCrossover(TestCase):
         self.assertListEqual(d0, [])
 
         d1 = PermutationCrossover.compute_difference(p1, p2)
-        #difference should be shorter than lists lengths
+        # difference should be shorter than lists lengths
         self.assertLess(len(d1), len(p1))
-        #appalying difference to first list should yield second list
+        # appalying difference to first list should yield second list
         self.assertListEqual(p2, TestPermutationCrossover.transform(p1, d1))
 
         d2 = PermutationCrossover.compute_difference(p2, p1)
