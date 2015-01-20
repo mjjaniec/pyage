@@ -3,8 +3,9 @@ import os
 import urllib2
 import time
 import sys
-from pyage.conf.flowshop_conf import time_matrix, evaluation
+
 from pyage.core.inject import InjectOptional, Inject
+
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +32,7 @@ class WithGenomeStatistics(Statistics):
                 self.best = agent.get_best_genotype()
 
         self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
-                          .format(step, t, self.best.fitness, self.best.permutation))
+            .format(step, t, self.best.fitness, self.best.permutation))
 
     def summarize(self, agents):
         self.output.flush()
@@ -54,6 +55,7 @@ class SimpleStatistics(Statistics):
     def summarize(self, agents):
         try:
             import pylab
+
             logger.debug(self.history)
             logger.debug("best genotype: %s", max(agents, key=lambda a: a.get_fitness).get_best_genotype())
             pylab.yscale('symlog')
@@ -79,6 +81,7 @@ class TimeStatistics(SimpleStatistics):
     def summarize(self, agents):
         try:
             import pylab
+
             pylab.plot(self.times, self.history)
             pylab.xlabel("time (s)")
             pylab.ylabel("fitness")
@@ -142,13 +145,14 @@ class FlowShopStatistics(WithGenomeStatistics):
             self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
                 .format(step, t, self.best.fitness, self.best.permutation))
 
+    @Inject("time_matrix_provider", "evaluation")
     def summarize(self, agents):
         self.output.write('\n\n===================================================\n\n')
         self.output.write('Problem:\n')
-        self.print_matrix(time_matrix)
+        self.print_matrix(self.time_matrix_provider)
         self.output.write('____________________________________________________\n\n')
         self.output.write('Best known solution: {0}\n'.format(self.best.permutation))
-        makespan, result = evaluation().compute_makespan(self.best.permutation, True)
+        makespan, result = self.evaluation.compute_makespan(self.best.permutation, True)
 
         self.output.write('Makespan: {0}\n'.format(int(makespan)))
         self.output.write('Time table:\n')

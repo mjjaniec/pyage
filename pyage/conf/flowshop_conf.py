@@ -22,6 +22,7 @@ time_matrix = [
     [66, 58, 31, 68, 78, 91, 13, 59, 49, 85, 85, 9, 39, 41, 56, 40, 54, 77, 51, 31],
     [58, 56, 20, 85, 53, 35, 53, 41, 69, 13, 86, 72, 8, 49, 47, 87, 58, 18, 68, 28]
 ]
+time_matrix_provider = lambda: time_matrix
 agents_count = 50
 
 logger = lambda: logging.getLogger(__name__)
