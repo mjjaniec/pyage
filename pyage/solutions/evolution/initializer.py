@@ -1,11 +1,9 @@
 import random
 from random import uniform
-from random import randint
 
 from pyage.core.emas import EmasAgent
 from pyage.core.operator import Operator
-from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
-from pyage.utils import utils
+from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, PermutationGenotype
 
 
 class PointInitializer(Operator):
@@ -39,24 +37,6 @@ class FloatInitializer(Operator):
         return uniform(self.lowerbound, self.upperbound)
 
 
-class StringInitializer(Operator):
-    def __init__(self, size=100):
-        super(StringInitializer, self).__init__(StringGenotype)
-        self.size = size
-
-    def process(self, population):
-        for i in xrange(self.size):
-            population.append(StringGenotype(StringInitializer.gen_str()))
-
-    @staticmethod
-    def gen_str():
-        length = randint(1, 10)
-        result = ''
-        for i in xrange(length):
-            result += utils.rand_letter()
-        return result
-
-
 class PermutationInitializer(Operator):
     def __init__(self, length, size=100):
         """:type length: int"""
@@ -82,14 +62,6 @@ def flow_shop_agents_initializer(size, length, energy):
     agents = {}
     for i in xrange(size):
         agent = EmasAgent(PermutationGenotype(PermutationInitializer.gen_permutation(length)), energy)
-        agents[agent.get_address()] = agent
-    return agents
-
-
-def makota_agents_initializer(size, energy):
-    agents = {}
-    for i in xrange(size):
-        agent = EmasAgent(StringGenotype(StringInitializer.gen_str()), energy)
         agents[agent.get_address()] = agent
     return agents
 

@@ -2,10 +2,8 @@ from copy import deepcopy
 import random
 
 from pyage.core.inject import Inject
-
-from pyage.utils import utils
 from pyage.core.operator import Operator
-from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
+from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, PermutationGenotype
 
 
 class AbstractMutation(Operator):
@@ -49,28 +47,6 @@ class NormalMutation(object):
         for index in range(len(genotype.genes)):
             if random.random() < self.probability:
                 genotype.genes[index] = random.gauss(genotype.genes[index], self.radius)
-
-
-class StringMutation(AbstractMutation):
-    def __init__(self, probability=0.1):
-        super(StringMutation, self).__init__(StringGenotype, probability)
-
-    def mutate(self, genotype):
-        new_genes = StringMutation.do_mutate(genotype.genes)
-        genotype.genes = new_genes
-
-    @staticmethod
-    def do_mutate(string):
-        index = random.randint(0, len(string) - 1)
-        if random.random() < 0.6:
-            # change one letter
-            return string[:index] + utils.rand_letter() + string[index + 1:]
-        elif random.random() < 0.5 and len(string) > 1:
-            # remove one letter
-            return string[:index] + string[index + 1:]
-        else:
-            # add one letter
-            return string[:index] + utils.rand_letter() + string[index:]
 
 
 class PermutationMutation(AbstractMutation):

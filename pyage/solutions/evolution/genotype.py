@@ -25,19 +25,6 @@ class FloatGenotype(object):
         return self.__str__()
 
 
-class StringGenotype(object):
-    def __init__(self, genes):
-        super(StringGenotype, self).__init__()
-        self.fitness = None
-        self.genes = genes
-
-    def __str__(self):
-        return "SG[g: %s, f: %s]" % (self.genes, self.fitness)
-
-    def __repr__(self):
-        return self.__str__()
-
-
 class PermutationGenotype(object):
     def __init__(self, permutation):
         """:type permutation: list of int"""
