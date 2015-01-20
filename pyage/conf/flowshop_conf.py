@@ -9,7 +9,7 @@ from pyage.core.locator import GridLocator
 from pyage.core.migration import ParentMigration
 from pyage.core.stats.statistics import FlowShopStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
-from pyage.solutions.evolution.crossover import PermutationCrossover
+from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
 from pyage.solutions.evolution.initializer import flow_shop_agents_initializer, PermutationInitializer
 from pyage.solutions.evolution.mutation import PermutationMutation
@@ -43,7 +43,7 @@ newborn_energy = lambda: 100
 transferred_energy = lambda: 40
 
 evaluation = lambda: FlowShopEvaluation(time_matrix)
-crossover = lambda: PermutationCrossover()
+crossover = lambda: FirstHalfSwapsCrossover()
 # sample memetic config:
 # mutation = lambda: MemeticPermutationMutation(5, 5, 2)
 mutation = lambda: PermutationMutation(2)

@@ -19,16 +19,45 @@ def swaps_p1_to_p2(p1, p2):
         if not visited[i]:  # start a cycle
             while not visited[i]:
                 visited[i] = True
-                next = position_in_p1[p2[i]]
-                result.append((i, next))
-                i = next
+                next_ = position_in_p1[p2[i]]
+                result.append((i, next_))
+                i = next_
             result.pop()  # last swap is excessive
     return result
 
 
-class PermutationCrossover(AbstractCrossover):
+def swap(list_, i, j):
+    list_[i], list_[j] = list_[j], list_[i]
+
+
+class DummyHalfSwapsCrossover(AbstractCrossover):
     def __init__(self, size=100):
-        super(PermutationCrossover, self).__init__(PermutationGenotype, size)
+        super(DummyHalfSwapsCrossover, self).__init__(PermutationGenotype, size)
+
+    def cross(self, p1, p2):
+        """
+        :type p1: PermutationGenotype
+        :type p2: PermutationGenotype
+        :rtype PermutationGenotype"""
+
+        genotype = PermutationGenotype(list(p1.permutation))
+        swaps = swaps_p1_to_p2(p1.permutation, p2.permutation)
+
+        # execute a half (statistically!) of swaps from p1, to p2 - hence Dummy
+        for (i, j) in swaps:
+            if utils.rand_bool():
+                swap(genotype.permutation, i, j)
+
+        return genotype
+
+
+def first_half(list_):
+    return list_[:len(list_) // 2]
+
+
+class FirstHalfSwapsCrossover(AbstractCrossover):
+    def __init__(self, size=100):
+        super(FirstHalfSwapsCrossover, self).__init__(PermutationGenotype, size)
 
     def cross(self, p1, p2):
         """
@@ -37,12 +66,12 @@ class PermutationCrossover(AbstractCrossover):
         :rtype PermutationGenotype"""
 
         swaps = swaps_p1_to_p2(p1.permutation, p2.permutation)
-        offspring = PermutationGenotype(list(p1.permutation))
+        genotype = PermutationGenotype(list(p1.permutation))
 
-        # execute about a half of transformation from p1, to p2
-        for (i, j) in swaps:
-            if utils.rand_bool():
-                offspring.permutation[i], offspring.permutation[j] = offspring.permutation[j], offspring.permutation[i]
+        # execute first half of swaps from p1, to p2
+        for (i, j) in first_half(swaps):
+            swap(genotype.permutation, i, j)
 
-        return offspring
-
+        # TODO(vucalur): should return 2 children: from first and second half on the swaps.
+        # TODO(vucalur): modify AbstractCrossover so it can handle such usage
+        return genotype
