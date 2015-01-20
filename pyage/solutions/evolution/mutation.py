@@ -1,7 +1,9 @@
+from copy import deepcopy
 import random
 
-from pyage.utils import utils
+from pyage.core.inject import Inject
 
+from pyage.utils import utils
 from pyage.core.operator import Operator
 from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, StringGenotype, PermutationGenotype
 
@@ -72,25 +74,59 @@ class StringMutation(AbstractMutation):
 
 
 class PermutationMutation(AbstractMutation):
-    def __init__(self, count, probability=0.4):
-        """:param count: int"""
+    def __init__(self, random_swaps_count, probability=0.4):
+        """:param random_swaps_count: int"""
         super(PermutationMutation, self).__init__(PermutationGenotype, probability)
-        self.count = count
+        self.random_swaps_count = random_swaps_count
 
     def mutate(self, genotype):
         """:type genotype: PermutationGenotype"""
-        for _ in xrange(self.count):
-            PermutationMutation.do_mutate(genotype.permutation)
 
-    @staticmethod
-    def do_mutate(permutation):
-        """ :param permutation: list of int """
-        length = len(permutation)
-        i = random.randint(0, length - 1)
-        j = random.randint(0, length - 1)
-        permutation[i], permutation[j] = permutation[j], permutation[i]
+        def perform_random_swap(permutation):
+            """ :param permutation: list of int """
+            length = len(permutation)
+            i = random.randint(0, length - 1)
+            j = random.randint(0, length - 1)
+            permutation[i], permutation[j] = permutation[j], permutation[i]
 
-
+        for _ in xrange(self.random_swaps_count):
+            perform_random_swap(genotype.permutation)
 
 
+class MemeticPermutationMutation(PermutationMutation):
+    def __init__(self, local_rounds_count, attempts_per_round, random_swaps_count, probability=0.4):
+        """:param random_swaps_count: int
+           :param random_swaps_count: int"""
+        super(MemeticPermutationMutation, self).__init__(random_swaps_count, probability)
+        self.local_rounds_count = local_rounds_count
+        self.attempts_per_round = attempts_per_round
 
+    @Inject('evaluation')
+    def mutate(self, genotype):
+        """:type genotype: PermutationGenotype"""
+
+        def fitness(genotype):
+            result = self.evaluation.compute_makespan(genotype.permutation)
+            return result
+
+        def do_round():
+            def perform_mutation(round_base_genotype):
+                candidate_genotype = deepcopy(round_base_genotype)
+                super(MemeticPermutationMutation, self).mutate(candidate_genotype)
+                candidate_fitness = fitness(candidate_genotype)
+                return candidate_fitness, candidate_genotype
+
+            def update_best_if_better(candidate_fitness, candidate_genotype):
+                if candidate_fitness < best['fitness']:
+                    best['genotype'] = candidate_genotype
+                    best['fitness'] = candidate_fitness
+
+            round_base_genotype = deepcopy(best['genotype'])
+            for _ in xrange(self.attempts_per_round):
+                candidate_fitness, candidate_genotype = perform_mutation(round_base_genotype)
+                update_best_if_better(candidate_fitness, candidate_genotype)
+
+        best = {'genotype': genotype, 'fitness': fitness(genotype)}  # why a map? here: http://stackoverflow.com/a/2609593/1432478
+        for _ in xrange(self.local_rounds_count):
+            do_round()
+        genotype.permutation = best['genotype'].permutation  # genotype = best_genotype won't work
