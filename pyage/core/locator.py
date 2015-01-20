@@ -97,4 +97,12 @@ class TorusLocator(Locator):
 # old, deprecated classes, kept for compatibility reasons
 GridLocator = TorusLocator
 RowLocator = TorusLocator
-RandomLocator = TorusLocator
+
+
+class RandomLocator(Locator):
+    def get_neighbour(self, agent):
+        siblings = list(agent.parent.get_agents())
+        if len(siblings) < 2:
+            return None
+        siblings.remove(agent)
+        return random.choice(siblings)

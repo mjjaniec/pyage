@@ -2,7 +2,6 @@ import logging
 import random
 
 from pyage.core.address import Addressable
-from pyage.core.agent.aggregate import get_random_move
 from pyage.core.inject import Inject, InjectWithDefault
 
 
@@ -34,11 +33,11 @@ class EmasAgent(Addressable):
                     self.emas.reproduce(self, neighbour)
                 else:
                     self.meet(neighbour)
-            self._mutate()
-            if self.emas.can_migrate(self):
-                self.migration.migrate(self)
-            elif self.parent and self.emas.should_move(self):
-                self.parent.move(self)
+                    # self._mutate()
+                    # if self.emas.can_migrate(self):
+                    # self.migration.migrate(self)
+                    # elif self.parent and self.emas.should_move(self):
+                    # self.parent.move(self)
         except:
             logging.exception('')
 
@@ -114,8 +113,8 @@ class EmasService(object):
         return agent.get_energy() <= self.minimal_energy and not agent.dead
 
     def should_reproduce(self, a1, a2):
-        return a1.get_energy() > self.reproduction_minimum and a2.get_energy() > self.reproduction_minimum \
-               and a1.parent.locator.get_allowed_moves(a1)
+        return a1.get_energy() > self.reproduction_minimum and a2.get_energy() > self.reproduction_minimum  # \
+        # and a1.parent.locator.get_allowed_moves(a1)
 
     def can_migrate(self, agent):
         return agent.get_energy() > self.migration_minimum and len(agent.parent.get_agents()) > 10
@@ -131,7 +130,7 @@ class EmasService(object):
         genotype = a1.crossover.cross(a1.genotype, a2.get_genotype())
         a1.mutation.mutate(genotype)
         newborn = EmasAgent(genotype, energy)
-        a1.parent.locator.add_agent(newborn, get_random_move(a1.parent.locator.get_allowed_moves(a1)))
+        # a1.parent.locator.add_agent(newborn, get_random_move(a1.parent.locator.get_allowed_moves(a1)))
         a1.parent.add_agent(newborn)
 
 
