@@ -1,6 +1,5 @@
 # coding=utf-8
 import logging
-import time
 
 from pyage.core import address
 from pyage.core.agent.agent import unnamed_agents
@@ -8,7 +7,7 @@ from pyage.core.agent.aggregate import AggregateAgent
 from pyage.core.emas import EmasService
 from pyage.core.locator import GridLocator
 from pyage.core.migration import ParentMigration
-from pyage.core.stats.statistics import WithGenomeStatistics
+from pyage.core.stats.statistics import FlowShopStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
 from pyage.solutions.evolution.crossover import PermutationCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
@@ -53,49 +52,5 @@ address_provider = address.SequenceAddressProvider
 
 migration = ParentMigration
 locator = GridLocator
-
-
-class FlowShopStatistics(WithGenomeStatistics):
-    def __init__(self, file_name):
-        self.output = open(file_name, 'w')
-        self.time = time.time()
-        self.best = None
-        self.lastBest = None
-
-    def update(self, step, agents):
-        t = time.time() - self.time
-        self.lastBest = self.best
-
-        self.best = agents[0].get_best_genotype()
-        for agent in agents:
-            if agent.get_best_genotype().fitness > self.best.fitness:
-                self.best = agent.get_best_genotype()
-
-        if self.lastBest is None or self.lastBest.fitness < self.best.fitness:
-            print -self.best.fitness
-            self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
-                .format(step, t, self.best.fitness, self.best.permutation))
-
-    def summarize(self, agents):
-        self.output.write('\n\n===================================================\n\n')
-        self.output.write('Problem:\n')
-        self.print_matrix(time_matrix)
-        self.output.write('____________________________________________________\n\n')
-        self.output.write('Best known solution: {0}\n'.format(self.best.permutation))
-        makespan, result = evaluation().compute_makespan(self.best.permutation, True)
-
-        self.output.write('Makespan: {0}\n'.format(int(makespan)))
-        self.output.write('Time table:\n')
-        self.print_matrix(result)
-        self.output.flush()
-        self.output.close()
-
-    def print_matrix(self, matrix):
-        for row in matrix:
-            for i in row:
-                val = str(int(i))
-                self.output.write(val + (6 - len(val)) * ' ')
-            self.output.write('\n')
-
 
 stats = lambda: FlowShopStatistics('out_%s_pyage.txt' % __name__)

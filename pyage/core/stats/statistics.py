@@ -3,6 +3,7 @@ import os
 import urllib2
 import time
 import sys
+from pyage.conf.flowshop_conf import time_matrix, evaluation
 from pyage.core.inject import InjectOptional, Inject
 
 logger = logging.getLogger(__name__)
@@ -118,3 +119,46 @@ class NoStatistics(Statistics):
 
     def summarize(self, agents):
         pass
+
+
+class FlowShopStatistics(WithGenomeStatistics):
+    def __init__(self, file_name):
+        self.output = open(file_name, 'w')
+        self.time = time.time()
+        self.best = None
+        self.lastBest = None
+
+    def update(self, step, agents):
+        t = time.time() - self.time
+        self.lastBest = self.best
+
+        self.best = agents[0].get_best_genotype()
+        for agent in agents:
+            if agent.get_best_genotype().fitness > self.best.fitness:
+                self.best = agent.get_best_genotype()
+
+        if self.lastBest is None or self.lastBest.fitness < self.best.fitness:
+            print -self.best.fitness
+            self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
+                .format(step, t, self.best.fitness, self.best.permutation))
+
+    def summarize(self, agents):
+        self.output.write('\n\n===================================================\n\n')
+        self.output.write('Problem:\n')
+        self.print_matrix(time_matrix)
+        self.output.write('____________________________________________________\n\n')
+        self.output.write('Best known solution: {0}\n'.format(self.best.permutation))
+        makespan, result = evaluation().compute_makespan(self.best.permutation, True)
+
+        self.output.write('Makespan: {0}\n'.format(int(makespan)))
+        self.output.write('Time table:\n')
+        self.print_matrix(result)
+        self.output.flush()
+        self.output.close()
+
+    def print_matrix(self, matrix):
+        for row in matrix:
+            for i in row:
+                val = str(int(i))
+                self.output.write(val + (6 - len(val)) * ' ')
+            self.output.write('\n')
