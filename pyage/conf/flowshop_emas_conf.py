@@ -25,9 +25,6 @@ time_matrix = [
 agents_count = 50
 agent_population = 20
 
-logger = lambda: logging.getLogger(__name__)
-
-logger().debug("EMAS, %s agents", agents_count)
 agents = unnamed_agents(agents_count, AggregateAgent)
 
 stop_condition = lambda: TimeLimitStopCondition(10)
@@ -55,3 +52,6 @@ migration = ParentMigration
 locator = RandomLocator
 
 stats = lambda: FlowShopStatistics('out_%s_pyage.txt' % __name__)
+
+logger = lambda: logging.getLogger(__name__)
+logger().debug("EMAS, %s agents", agents_count)

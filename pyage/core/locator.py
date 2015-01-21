@@ -106,3 +106,7 @@ class RandomLocator(Locator):
             return None
         siblings.remove(agent)
         return random.choice(siblings)
+
+
+    def remove_agent(self, agent):
+        pass
