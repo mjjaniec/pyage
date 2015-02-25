@@ -24,3 +24,8 @@ class Test_first_half(TestCase):
         expected = [10]
         actual = first_half(a)
         self.assertListEqual(expected, actual)
+
+        a = [10, 1, 100, 2, 3, 600]
+        expected = [10, 1, 100]
+        actual = first_half(a)
+        self.assertListEqual(expected, actual)

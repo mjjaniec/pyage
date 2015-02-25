@@ -6,6 +6,7 @@ from pyage.solutions.evolution.genotype import PointGenotype, FloatGenotype, Per
 
 A = 10
 
+
 class FloatRastriginEvaluation(Operator):
     def __init__(self):
         super(FloatRastriginEvaluation, self).__init__(FloatGenotype)
@@ -68,7 +69,6 @@ class FlowShopEvaluation(Operator):
         """
         super(FlowShopEvaluation, self).__init__(PermutationGenotype)
         self.time_matrix = time_matrix
-        self.max_time = sum(sum(row) for row in time_matrix)
 
     def process(self, population):
         """ :type population: list of PermutationGenotype """
@@ -79,9 +79,7 @@ class FlowShopEvaluation(Operator):
         """
         :param permutation: order of processing
         :type permutation: list of float
-        :param time_matrix: time_matrix[processor][job]
-        :type time_matrix: list of list
-        :return: makespan for processing in given order (permutation)
+        :return: makespan for processing in order specified by permutation
         :rtype: float
         """
 
@@ -90,16 +88,16 @@ class FlowShopEvaluation(Operator):
         if csm:
             solution_matrix = []
             for _ in xrange(len(self.time_matrix)):
-                solution_matrix.append([None]*len(permutation))
+                solution_matrix.append([None] * len(permutation))
 
         back = []
         for i in xrange(len(self.time_matrix) + 1):
             back.append(0.0)
         for job in xrange(len(permutation)):
             for process in xrange(len(self.time_matrix)):
-                back[process+1] = max(back[process+1], back[process]) + self.time_matrix[process][permutation[job]]
+                back[process + 1] = max(back[process + 1], back[process]) + self.time_matrix[process][permutation[job]]
                 if csm:
-                    solution_matrix[process][job] = back[process+1]
+                    solution_matrix[process][job] = back[process + 1]
         ret = back[-1]
         return ret if not csm else (ret, solution_matrix)
 
