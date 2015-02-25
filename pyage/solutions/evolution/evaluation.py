@@ -69,35 +69,40 @@ class FlowShopEvaluation(Operator):
         """
         super(FlowShopEvaluation, self).__init__(PermutationGenotype)
         self.time_matrix = time_matrix
+        self.jobs_count = len(self.time_matrix[0]) + 1  # + 1: for sentinel column
+        self.processors_count = len(self.time_matrix) + 1  # + 1: for sentinel row
 
     def process(self, population):
         """ :type population: list of PermutationGenotype """
         for individual in population:
-            individual.fitness = - self.compute_makespan(individual.permutation)
+            individual.fitness = - self._compute_makespan(individual.permutation)
 
-    def compute_makespan(self, permutation, compute_solution_matrix=False):
+    def _compute_makespan(self, permutation, compute_solution_matrix=False):
         """
-        :param permutation: order of processing
-        :type permutation: list of float
-        :return: makespan for processing in order specified by permutation
+        :return: makespan for processing in order specified by :param permutation:
         :rtype: float
         """
+        completion_times = self._calculate_completion_times(permutation)
 
-        csm = compute_solution_matrix
-        solution_matrix = None
-        if csm:
-            solution_matrix = []
-            for _ in xrange(len(self.time_matrix)):
-                solution_matrix.append([None] * len(permutation))
+        if compute_solution_matrix:
+            return completion_times[-1][-1], completion_times
+        else:
+            return completion_times[-1][-1]
 
-        back = []
-        for i in xrange(len(self.time_matrix) + 1):
-            back.append(0.0)
-        for job in xrange(len(permutation)):
-            for process in xrange(len(self.time_matrix)):
-                back[process + 1] = max(back[process + 1], back[process]) + self.time_matrix[process][permutation[job]]
-                if csm:
-                    solution_matrix[process][job] = back[process + 1]
-        ret = back[-1]
-        return ret if not csm else (ret, solution_matrix)
+    def _calculate_completion_times(self, permutation):
+        completion_times = self._initialize_including_sentinels()
+        for pi in xrange(1, self.processors_count):
+            for ji in xrange(1, self.jobs_count):
+                completion_times[pi][ji] = self.time_matrix[pi-1][permutation[ji-1]] \
+                                           + max(completion_times[pi][ji - 1], completion_times[pi - 1][ji])
+        completion_times = self._strip_sentinels(completion_times)
+        return completion_times
+
+    def _initialize_including_sentinels(self):
+        return [[0 for job_i in xrange(self.jobs_count)]
+                for processor_i in xrange(self.processors_count)]
+
+    @staticmethod
+    def _strip_sentinels(completion_times):
+        return [processor[1:] for processor in completion_times[1:]]
 

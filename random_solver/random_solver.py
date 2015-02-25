@@ -19,7 +19,7 @@ def main():
     best = 1e15
     while time.time() - time_0 < seconds:
         perm = PermutationInitializer.gen_permutation(len(time_matrix[0]))
-        makespan = evaluation.compute_makespan(perm)
+        makespan = evaluation._compute_makespan(perm)
         if makespan < best:
             best = makespan
             print best

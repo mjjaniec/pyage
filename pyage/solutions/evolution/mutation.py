@@ -82,7 +82,7 @@ class MemeticPermutationMutation(PermutationMutation):
         """:type genotype: PermutationGenotype"""
 
         def fitness(genotype):
-            result = self.evaluation.compute_makespan(genotype.permutation)
+            result = self.evaluation._compute_makespan(genotype.permutation)
             return result
 
         def do_round():

@@ -27,7 +27,15 @@ class FloatGenotype(object):
 
 class PermutationGenotype(object):
     def __init__(self, permutation):
-        """:type permutation: list of int"""
+        """
+        :param permutation: order of processing
+                a list of consecutive job numbers (0..n-1 NOT 1..n)
+                NOT a list of orders of particular jobs
+
+                e.g. a permutation (2,0,1) means that job2 is 1st, job0 2nd and job1 3rd
+                NOT job0 is 3rd, job1 1st and job2 2nd
+        :type permutation: list of int
+        """
         self.permutation = permutation
         self.fitness = None
 
