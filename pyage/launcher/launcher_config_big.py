@@ -1,7 +1,5 @@
 from pyage.launcher.constants import matrix, milestones, classic, emas
 
-__author__ = 'mjjaniec'
-
 repeats = 30
 configs = [classic, emas]
 

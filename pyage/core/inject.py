@@ -5,6 +5,8 @@ class Inject(object):
     def __init__(self, *args):
         self.args = args
 
+    # TODO(vucalur): load the bloody config ONLY ONCE and cache it somehow! PERFORMANCE!
+    # I guess config module isn't replaced while pyage is computing, so caching makes sense.
     @staticmethod
     def read_config(config):
         # about importing modules: http://docs.python.org/2/reference/simple_stmts.html#grammar-token-import_stmt

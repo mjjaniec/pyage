@@ -38,30 +38,26 @@ class FloatInitializer(Operator):
 
 
 class PermutationInitializer(Operator):
-    def __init__(self, length, size=100):
-        """:type length: int"""
+    def __init__(self, permutation_length, population_size=100):
         super(PermutationInitializer, self).__init__(PermutationGenotype)
-        self.size = size
-        self.length = length
+        self.permutation_length = permutation_length
+        self.population_size = population_size
 
     def process(self, population):
-        for _ in xrange(self.size):
-            population.append(PermutationGenotype(PermutationInitializer.gen_permutation(self.length)))
+        for _ in xrange(self.population_size):
+            population.append(PermutationGenotype(PermutationInitializer.generate_permutation(self.permutation_length)))
 
     @staticmethod
-    def gen_permutation(length):
-        """ generate random permutation
-        :type length: int
-        :rtype: list of int"""
-        permutation = range(length)
+    def generate_permutation(permutation_length):
+        permutation = range(permutation_length)
         random.shuffle(permutation)
         return permutation
 
 
-def flow_shop_agents_initializer(size, length, energy):
+def flowshop_agents_initializer(size, length, energy):
     agents = {}
     for i in xrange(size):
-        agent = EmasAgent(PermutationGenotype(PermutationInitializer.gen_permutation(length)), energy)
+        agent = EmasAgent(PermutationGenotype(PermutationInitializer.generate_permutation(length)), energy)
         agents[agent.get_address()] = agent
     return agents
 

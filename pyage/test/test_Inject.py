@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 from pyage.core import inject
-
 from pyage.core.inject import Inject, InjectWithDefault
 
 

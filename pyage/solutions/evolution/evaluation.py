@@ -63,10 +63,6 @@ class SchwefelEvaluation(Operator):
 
 class FlowShopEvaluation(Operator):
     def __init__(self, time_matrix):
-        """
-        :type time_matrix: list of list
-        :param time_matrix: time_matrix[processor][job]
-        """
         super(FlowShopEvaluation, self).__init__(PermutationGenotype)
         self.time_matrix = time_matrix
         self.jobs_count = len(self.time_matrix[0]) + 1  # + 1: for sentinel column
@@ -75,13 +71,10 @@ class FlowShopEvaluation(Operator):
     def process(self, population):
         """ :type population: list of PermutationGenotype """
         for individual in population:
-            individual.fitness = - self._compute_makespan(individual.permutation)
+            individual.fitness = - self.compute_makespan(individual.permutation)
 
-    def _compute_makespan(self, permutation, compute_solution_matrix=False):
-        """
-        :return: makespan for processing in order specified by :param permutation:
-        :rtype: float
-        """
+    def compute_makespan(self, permutation, compute_solution_matrix=False):
+        """ :return: makespan for processing in order specified by :param permutation: """
         completion_times = self._calculate_completion_times(permutation)
 
         if compute_solution_matrix:
@@ -93,7 +86,7 @@ class FlowShopEvaluation(Operator):
         completion_times = self._initialize_including_sentinels()
         for pi in xrange(1, self.processors_count):
             for ji in xrange(1, self.jobs_count):
-                completion_times[pi][ji] = self.time_matrix[pi-1][permutation[ji-1]] \
+                completion_times[pi][ji] = self.time_matrix[pi - 1][permutation[ji - 1]] \
                                            + max(completion_times[pi][ji - 1], completion_times[pi - 1][ji])
         completion_times = self._strip_sentinels(completion_times)
         return completion_times

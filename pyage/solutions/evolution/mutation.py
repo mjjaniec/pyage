@@ -71,8 +71,6 @@ class PermutationMutation(AbstractMutation):
 
 class MemeticPermutationMutation(PermutationMutation):
     def __init__(self, local_rounds_count, attempts_per_round, random_swaps_count, probability=0.4):
-        """:param random_swaps_count: int
-           :param random_swaps_count: int"""
         super(MemeticPermutationMutation, self).__init__(random_swaps_count, probability)
         self.local_rounds_count = local_rounds_count
         self.attempts_per_round = attempts_per_round
@@ -82,7 +80,7 @@ class MemeticPermutationMutation(PermutationMutation):
         """:type genotype: PermutationGenotype"""
 
         def fitness(genotype):
-            result = self.evaluation._compute_makespan(genotype.permutation)
+            result = self.evaluation.compute_makespan(genotype.permutation)
             return result
 
         def do_round():
@@ -102,7 +100,7 @@ class MemeticPermutationMutation(PermutationMutation):
                 candidate_fitness, candidate_genotype = perform_mutation(round_base_genotype)
                 update_best_if_better(candidate_fitness, candidate_genotype)
 
-        best = {'genotype': genotype, 'fitness': fitness(genotype)}  # why a map? here: http://stackoverflow.com/a/2609593/1432478
+        best = {'genotype': genotype, 'fitness': fitness(genotype)}  # why a dict? here: http://stackoverflow.com/a/2609593/1432478
         for _ in xrange(self.local_rounds_count):
             do_round()
-        genotype.permutation = best['genotype'].permutation  # genotype = best_genotype won't work
+        genotype.permutation = best['genotype'].permutation  # genotype = best['genotype'] won't work

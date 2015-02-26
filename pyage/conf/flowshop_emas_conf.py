@@ -11,7 +11,7 @@ from pyage.core.stats.statistics import FlowShopStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
 from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
-from pyage.solutions.evolution.initializer import flow_shop_agents_initializer, PermutationInitializer
+from pyage.solutions.evolution.initializer import flowshop_agents_initializer, PermutationInitializer
 from pyage.solutions.evolution.mutation import PermutationMutation
 
 
@@ -22,15 +22,17 @@ time_matrix = [
     [66, 58, 31, 68, 78, 91, 13, 59, 49, 85, 85, 9, 39, 41, 56, 40, 54, 77, 51, 31],
     [58, 56, 20, 85, 53, 35, 53, 41, 69, 13, 86, 72, 8, 49, 47, 87, 58, 18, 68, 28]
 ]
-agents_count = 50
-agent_population = 20
+JOBS_COUNT = len(time_matrix[0])
+AGENTS_COUNT = 50
+POPULATION_SIZE = 20
 
-agents = unnamed_agents(agents_count, AggregateAgent)
+agents = unnamed_agents(AGENTS_COUNT, AggregateAgent)
 
 stop_condition = lambda: TimeLimitStopCondition(10)
 
-aggregated_agents = lambda: flow_shop_agents_initializer(agent_population, len(time_matrix[0]), agents_count)
+aggregated_agents = lambda: flowshop_agents_initializer(POPULATION_SIZE, JOBS_COUNT, AGENTS_COUNT)
 
+# based on femas_conf.py:
 emas = EmasService
 
 minimal_energy = lambda: 0
@@ -44,7 +46,7 @@ crossover = lambda: FirstHalfSwapsCrossover()
 # sample memetic config:
 # mutation = lambda: MemeticPermutationMutation(5, 5, 2)
 mutation = lambda: PermutationMutation(2)
-initializer = lambda: PermutationInitializer(len(time_matrix[0]))
+initializer = lambda: PermutationInitializer(JOBS_COUNT)
 
 address_provider = address.SequenceAddressProvider
 
@@ -54,4 +56,4 @@ locator = RandomLocator
 stats = lambda: FlowShopStatistics('out_%s_pyage.txt' % __name__)
 
 logger = lambda: logging.getLogger(__name__)
-logger().debug("EMAS, %s agents", agents_count)
+logger().debug("EMAS, %s agents", AGENTS_COUNT)

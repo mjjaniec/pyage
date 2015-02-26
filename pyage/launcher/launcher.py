@@ -14,12 +14,10 @@ from pyage.core.workplace import Workplace
 from pyage.launcher.constants import emas, classic, matrix
 from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
-from pyage.solutions.evolution.initializer import flow_shop_agents_initializer, PermutationInitializer
+from pyage.solutions.evolution.initializer import flowshop_agents_initializer, PermutationInitializer
 from pyage.solutions.evolution.mutation import PermutationMutation, MemeticPermutationMutation
 from pyage.solutions.evolution.selection import TournamentSelection
 
-
-__author__ = 'mjjaniec'
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +29,7 @@ def main():
                 for stages in l_conf.memetic_stages:
                     for obj in l_conf.matrices:
                         msg = "type: {0}, agents: {1}, pop: {2}, mem: {3}".format(config, number_of_aggregates,
-                                                                                  aggregate_size, stages)
+                            aggregate_size, stages)
                         print msg
                         logger.info(msg)
                         lunch_computation(config, number_of_aggregates, aggregate_size, stages, obj)
@@ -58,9 +56,10 @@ def create_resolver(params):
 
 
 def create_emas_params(agents_count, agent_population, time_matrix, stages):
+    JOBS_COUNT = len(time_matrix[0])
     return {
         "agents": unnamed_agents(agents_count, AggregateAgent),
-        "aggregated_agents": lambda: flow_shop_agents_initializer(agent_population, len(time_matrix[0]), agents_count),
+        "aggregated_agents": lambda: flowshop_agents_initializer(agent_population, JOBS_COUNT, agents_count),
         "emas": EmasService,
 
         "minimal_energy": lambda: 0,
@@ -69,7 +68,7 @@ def create_emas_params(agents_count, agent_population, time_matrix, stages):
         "newborn_energy": lambda: 100,
         "transferred_energy": lambda: 40,
 
-        "initializer": lambda: PermutationInitializer(len(time_matrix[0])),
+        "initializer": lambda: PermutationInitializer(JOBS_COUNT),
         "evaluation": lambda: FlowShopEvaluation(time_matrix),
         "crossover": lambda: FirstHalfSwapsCrossover(),
         "mutation": lambda: PermutationMutation(2) if stages == 0 else MemeticPermutationMutation(stages, 8, 2),
@@ -79,9 +78,10 @@ def create_emas_params(agents_count, agent_population, time_matrix, stages):
 
 
 def create_classic_params(agents_count, agent_population, time_matrix, stages):
+    JOBS_COUNT = len(time_matrix[0])
     return {
         "agents": generate_agents("flowshop", agents_count, Agent),
-        "initializer": lambda: PermutationInitializer(len(time_matrix[0]), agent_population),
+        "initializer": lambda: PermutationInitializer(JOBS_COUNT, agent_population),
         "evaluation": lambda: FlowShopEvaluation(time_matrix),
         "operators": lambda: [
             FirstHalfSwapsCrossover(),

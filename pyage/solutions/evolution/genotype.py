@@ -41,17 +41,19 @@ class PermutationGenotype(object):
 
     def __str__(self):
         string = "PG[{0}, fitness: {1}]".format(self.permutation, self.fitness)
-        return string if self.valid() else "INVALID!: " + string
+        return string if self.is_valid_permutation() else "INVALID!: " + string
 
     def __repr__(self):
         return self.__str__()
 
-    def valid(self):
-        """:rtype: bool"""
-        r = [0] * len(self.permutation)
-        for x in self.permutation:
-            r[x] += 1
-        return all(map(lambda q: q == 1, r))
+    def is_valid_permutation(self):
+        def all_ones(occurrences_count):
+            return all(map(lambda oc: oc == 1, occurrences_count))
+
+        occurrences_count = [0] * len(self.permutation)
+        for item in self.permutation:
+            occurrences_count[item] += 1
+        return all_ones(occurrences_count)
 
 
 

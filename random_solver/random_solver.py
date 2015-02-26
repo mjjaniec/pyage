@@ -1,4 +1,5 @@
 import time
+
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
 from pyage.solutions.evolution.initializer import PermutationInitializer
 
@@ -13,17 +14,17 @@ time_matrix = [
 
 seconds = 10
 
+
 def main():
     time_0 = time.time()
     evaluation = FlowShopEvaluation(time_matrix)
     best = 1e15
     while time.time() - time_0 < seconds:
-        perm = PermutationInitializer.gen_permutation(len(time_matrix[0]))
-        makespan = evaluation._compute_makespan(perm)
+        perm = PermutationInitializer.generate_permutation(len(time_matrix[0]))
+        makespan = evaluation.compute_makespan(perm)
         if makespan < best:
             best = makespan
             print best
-
 
 
 if __name__ == "__main__":
