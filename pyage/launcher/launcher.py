@@ -8,7 +8,7 @@ from pyage.core.agent.aggregate import AggregateAgent
 from pyage.core.emas import EmasService
 from pyage.core.locator import RandomLocator
 from pyage.core.migration import NoMigration, ParentMigration
-from pyage.core.stats.statistics import FlowShopStatistics
+from pyage.core.stats.statistics import SchedulingProblemStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
 from pyage.core.workplace import Workplace
 from pyage.launcher.constants import emas, classic, matrix
@@ -41,7 +41,7 @@ def create_base_params():
         "locator": RandomLocator,
         "logger": lambda: logger,
         "address_provider": lambda: SequenceAddressProvider(),
-        "stats": lambda: FlowShopStatistics('out_%s_pyage.txt' % __name__)
+        "stats": lambda: SchedulingProblemStatistics('out_%s_pyage.txt' % __name__)
     }
 
 

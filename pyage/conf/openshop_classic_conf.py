@@ -1,4 +1,3 @@
-# coding=utf-8
 import logging
 
 from pyage.core import address
@@ -8,7 +7,7 @@ from pyage.core.migration import NoMigration
 from pyage.core.stats.statistics import SchedulingProblemStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
 from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
-from pyage.solutions.evolution.evaluation import FlowShopEvaluation
+from pyage.solutions.evolution.evaluation import OpenShopEvaluation
 from pyage.solutions.evolution.initializer import PermutationInitializer
 from pyage.solutions.evolution.mutation import PermutationMutation
 from pyage.solutions.evolution.selection import TournamentSelection
@@ -22,14 +21,15 @@ time_matrix = lambda: [
     [58, 56, 20, 85, 53, 35, 53, 41, 69, 13, 86, 72, 8, 49, 47, 87, 58, 18, 68, 28]
 ]
 JOBS_COUNT = len(time_matrix()[0])
+PROCESSORS_COUNT = len(time_matrix())
 AGENTS_COUNT = 50
 POPULATION_SIZE = 20
 
-agents = generate_agents("flowshop", AGENTS_COUNT, Agent)
+agents = generate_agents("openshop", AGENTS_COUNT, Agent)
 stop_condition = lambda: TimeLimitStopCondition(10)
 
-evaluation = lambda: FlowShopEvaluation(time_matrix())
-initializer = lambda: PermutationInitializer(JOBS_COUNT, POPULATION_SIZE)
+evaluation = lambda: OpenShopEvaluation(time_matrix())
+initializer = lambda: PermutationInitializer(JOBS_COUNT * PROCESSORS_COUNT, POPULATION_SIZE)
 operators = lambda: [
     FirstHalfSwapsCrossover(),
     PermutationMutation(2),

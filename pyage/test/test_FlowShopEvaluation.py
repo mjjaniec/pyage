@@ -4,7 +4,28 @@ from pyage.solutions.evolution.evaluation import FlowShopEvaluation
 
 
 class TestFlowShopEvaluation(TestCase):
-    def test_compute_fitness_1(self):
+    def test_strip_sentinels(self):
+        to_strip = [
+            [1, 2],
+            [3, 4]
+        ]
+        expected = [[4]]
+        actual = FlowShopEvaluation._strip_sentinels(to_strip)
+        self.assertListEqual(actual, expected)
+
+        to_strip = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]
+        expected = [
+            [5, 6],
+            [8, 9]
+        ]
+        actual = FlowShopEvaluation._strip_sentinels(to_strip)
+        self.assertListEqual(actual, expected)
+
+    def test_compute_makespan_1(self):
         time_matrix = [
             [1, 2, 5],
             [4, 5, 1],
@@ -34,7 +55,7 @@ class TestFlowShopEvaluation(TestCase):
         self.assertEqual(evaluation.compute_makespan([2, 0, 1]), 20)
         self.assertEqual(evaluation.compute_makespan([2, 1, 0]), 22)
 
-    def test_compute_fitness_2(self):
+    def test_compute_makespan_2(self):
         time_matrix = [
             [1, 2, 3, 4, 5, 7],
             [2, 8, 4, 16, 4, 8],

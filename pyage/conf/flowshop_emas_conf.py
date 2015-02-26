@@ -7,7 +7,7 @@ from pyage.core.agent.aggregate import AggregateAgent
 from pyage.core.emas import EmasService
 from pyage.core.locator import RandomLocator
 from pyage.core.migration import ParentMigration
-from pyage.core.stats.statistics import FlowShopStatistics
+from pyage.core.stats.statistics import SchedulingProblemStatistics
 from pyage.core.stop_condition import TimeLimitStopCondition
 from pyage.solutions.evolution.crossover.permutation import FirstHalfSwapsCrossover
 from pyage.solutions.evolution.evaluation import FlowShopEvaluation
@@ -53,7 +53,7 @@ address_provider = address.SequenceAddressProvider
 migration = ParentMigration
 locator = RandomLocator
 
-stats = lambda: FlowShopStatistics('out_%s_pyage.txt' % __name__)
+stats = lambda: SchedulingProblemStatistics('out_%s_pyage.txt' % __name__)
 
 logger = lambda: logging.getLogger(__name__)
 logger().debug("EMAS, %s agents", AGENTS_COUNT)

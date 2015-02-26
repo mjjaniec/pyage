@@ -55,6 +55,7 @@ class SimpleStatistics(Statistics):
     def summarize(self, agents):
         try:
             import pylab
+
             logger.debug(self.history)
             logger.debug("best genotype: %s", max(agents, key=lambda a: a.get_fitness).get_best_genotype())
             pylab.yscale('symlog')
@@ -80,6 +81,7 @@ class TimeStatistics(SimpleStatistics):
     def summarize(self, agents):
         try:
             import pylab
+
             pylab.plot(self.times, self.history)
             pylab.xlabel("time (s)")
             pylab.ylabel("fitness")
@@ -122,7 +124,7 @@ class NoStatistics(Statistics):
         pass
 
 
-class FlowShopStatistics(WithGenomeStatistics):
+class SchedulingProblemStatistics(WithGenomeStatistics):
     def __init__(self, file_name):
         self.output = open(file_name, 'w')
         self.time = time.time()
@@ -141,7 +143,7 @@ class FlowShopStatistics(WithGenomeStatistics):
         if self.lastBest is None or self.lastBest.fitness < self.best.fitness:
             print -self.best.fitness
             self.output.write('fitness: {2},\tgenome: {3} step: {0},time: {1:.3}\n'
-                              .format(step, t, self.best.fitness, self.best.permutation))
+                .format(step, t, self.best.fitness, self.best.permutation))
 
     def summarize(self, agents):
         pass

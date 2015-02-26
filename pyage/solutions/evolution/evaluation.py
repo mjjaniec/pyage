@@ -65,8 +65,8 @@ class FlowShopEvaluation(Operator):
     def __init__(self, time_matrix):
         super(FlowShopEvaluation, self).__init__(PermutationGenotype)
         self.time_matrix = time_matrix
-        self.jobs_count = len(self.time_matrix[0]) + 1  # + 1: for sentinel column
-        self.processors_count = len(self.time_matrix) + 1  # + 1: for sentinel row
+        self.JOBS_COUNT = len(self.time_matrix[0]) + 1  # + 1: for sentinel column
+        self.PROCESSORS_COUNT = len(self.time_matrix) + 1  # + 1: for sentinel row
 
     def process(self, population):
         """ :type population: list of PermutationGenotype """
@@ -76,7 +76,6 @@ class FlowShopEvaluation(Operator):
     def compute_makespan(self, permutation, compute_solution_matrix=False):
         """ :return: makespan for processing in order specified by :param permutation: """
         completion_times = self._calculate_completion_times(permutation)
-
         if compute_solution_matrix:
             return completion_times[-1][-1], completion_times
         else:
@@ -84,18 +83,54 @@ class FlowShopEvaluation(Operator):
 
     def _calculate_completion_times(self, permutation):
         completion_times = self._initialize_including_sentinels()
-        for pi in xrange(1, self.processors_count):
-            for ji in xrange(1, self.jobs_count):
+        for pi in xrange(1, self.PROCESSORS_COUNT):
+            for ji in xrange(1, self.JOBS_COUNT):
                 completion_times[pi][ji] = self.time_matrix[pi - 1][permutation[ji - 1]] \
                                            + max(completion_times[pi][ji - 1], completion_times[pi - 1][ji])
         completion_times = self._strip_sentinels(completion_times)
         return completion_times
 
     def _initialize_including_sentinels(self):
-        return [[0 for job_i in xrange(self.jobs_count)]
-                for processor_i in xrange(self.processors_count)]
+        return [[0 for job_i in xrange(self.JOBS_COUNT)]
+                for processor_i in xrange(self.PROCESSORS_COUNT)]
 
     @staticmethod
     def _strip_sentinels(completion_times):
         return [processor[1:] for processor in completion_times[1:]]
 
+
+class OpenShopEvaluation(Operator):
+    def __init__(self, time_matrix):
+        super(OpenShopEvaluation, self).__init__(PermutationGenotype)
+        self.time_matrix = time_matrix
+        self.JOBS_COUNT = len(self.time_matrix[0])
+        self.PROCESSORS_COUNT = len(self.time_matrix)
+
+    def process(self, population):
+        """ :type population: list of PermutationGenotype """
+        for individual in population:
+            individual.fitness = - self.compute_makespan(individual.permutation)
+
+    def compute_makespan(self, permutation):
+        jobs_cts = self._calculate_jobs_completion_times(permutation)
+        return max(jobs_cts)
+
+    def _calculate_jobs_completion_times(self, permutation):
+        def update_cts(ct):
+            processors_cts[proc_id] = ct
+            jobs_cts[job_id] = ct
+
+        # cts - completion_times
+        processors_cts = [0 for _ in range(self.PROCESSORS_COUNT)]
+        jobs_cts = [0 for _ in range(self.JOBS_COUNT)]
+        for permutation_item in permutation:
+            job_id, proc_id = self._decode_ids(permutation_item)
+            can_start_at = max(processors_cts[proc_id], jobs_cts[job_id])
+            task_time = self.time_matrix[proc_id][job_id]
+            update_cts(can_start_at + task_time)
+        return jobs_cts
+
+    def _decode_ids(self, permutation_item):
+        proc_id = permutation_item % self.PROCESSORS_COUNT
+        job_id = permutation_item // self.PROCESSORS_COUNT
+        return job_id, proc_id
