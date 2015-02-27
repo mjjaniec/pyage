@@ -56,7 +56,7 @@ ozwiązuje nie wielki problem - pierwszy z pliku `tai20x5.txt`
 Obliczenia są kończone po upływie 10 sekund - nalpeszy znaleźiony wynik jest zwracany
 
 ### Unurchomienie wielu eksperymentów
-`launcher.py` pozwala na uruchomienie wielu eksperymentów w trybie wsadowym, przydatne to jest do przygotowania wyników dla prezentacji. Pozwala wielokrotne uruchomienie symulacji dla tego samego przypadku, a także uruchomienie eksperymentów dla wielu różnych testów. Pozwala na ustalenie, liczy agregatów, oraz ich populacji, metodyki (emas, classic), różnych problemów wejściowych, oraz różnej ilości etapów memetyki. Należy wziąć pod uwagę że wykonanie iloczynu kartezjańskiego wszystkich kombinacji parametrów eksperymentu może zabrać bardzo dużo czasu. Obliczenia potrzebne do przygotowania naszego opracowania zajęły około 48h
+`launcher.py` pozwala na uruchomienie wielu eksperymentów w trybie wsadowym, przydatne to jest do przygotowania wyników dla prezentacji. Pozwala na wielokrotne uruchomienie symulacji dla tego samego przypadku, a także uruchomienie eksperymentów dla wielu różnych testów. Pozwala na ustalenie, liczy agregatów, oraz ich populacji, metodyki (emas, classic), różnych problemów wejściowych, oraz różnej ilości etapów memetyki. Należy wziąć pod uwagę że wykonanie iloczynu kartezjańskiego wszystkich kombinacji parametrów eksperymentu może zabrać bardzo dużo czasu. Obliczenia potrzebne do przygotowania naszego opracowania zajęły około 48h
 
 ## Random solver - as reference solution
 Aby pokazać że rozwiązanie dizała dobrze warto pokazać że daje lepsze wyniki niż 
