@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/mjjaniec/pyage.png?label=ready&title=Ready)](https://waffle.io/mjjaniec/pyage)
+[![Stories in Ready](https://badge.waffle.io/vucalur/pyage.png?label=ready&title=Ready)](https://waffle.io/vucalur/pyage)
 [![Build Status](https://travis-ci.org/vucalur/pyage_shopping.svg)](https://travis-ci.org/vucalur/pyage_shopping)
 # Job scheduling problems with pyage platform - Computational intelligence
 
