@@ -1,5 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/mjjaniec/pyage.png?label=ready&title=Ready)](https://waffle.io/mjjaniec/pyage)
-# Job scheduling problems - Computation intelligence
+# Job scheduling problems with pyage platform - Computational intelligence
 
 ## Team
 

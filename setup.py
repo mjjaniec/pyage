@@ -1,10 +1,45 @@
-try:
-    import paver.tasks
-except ImportError:
-    from os.path import exists
-    if exists("paver-minilib.zip"):
-        import sys
-        sys.path.insert(0, "paver-minilib.zip")
-    import paver.tasks
+import sys
 
-paver.tasks.main()
+from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
+
+
+class PyTest(TestCommand):
+    '''
+    from: http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands
+    '''
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        # import here, cause outside the eggs aren't loaded
+        import pytest
+
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
+
+
+setup(
+    name="pyage_shopping",
+    version="1.0",
+    packages=find_packages(),
+
+    install_requires=['Pyro4(==4.17)'],
+
+    tests_require=['pytest'],
+    cmdclass={'test': PyTest},
+
+    # metadata for upload to PyPI
+    author='Michał Janiec, Wojciech Krzystek',
+    author_email='see committers emails :-)',
+    description="This is an Example Package",
+    # TODO(vucalur): License
+    license='BSD License',  # sample license
+    keywords="python evolutionary pyage genetic open-shop flow shop",
+    url="https://github.com/mjjaniec/pyage_shopping",
+
+    # could also include long_description, download_url, classifiers, etc.
+)
