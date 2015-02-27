@@ -82,17 +82,12 @@ to be the outcome for a processed specimen
  * `def cross(self, p1, p2)` - finds a minimal list of swaps required to transform `p1` into `p2` and performs half of it, yielding a in-between specimen from `p1` to `p2`.  
   See *GAFAPAS* chapt. 3.5. Crossover, par. Cycle crossover (CX) p. 62-67 for more details.
 
+## Benchmarks
+<https://docs.google.com/document/d/17MDBkl22GAAb_Qb3xXM0eSGsVnH4iVcxAXOaNVnm5uc/edit?usp=sharing>
+ 
 ## Random solver - as reference solution
-Aby pokazać że rozwiązanie dizała dobrze warto pokazać że daje lepsze wyniki niż 
-losowe przeszukiwanie przestrzeni rozwiązań. Taką strategię implementuje `random_solver.py`
-Operuje na tym samym problemie, i również przerywa obliczenia po upływie 10 sekund.
-
-## Wyniki
-
-Dla przykładowego problem (jw i 10 sekund obliczeń):
+To show solution correctness, `random_solver.py` has been implemented.  
+Results on sample problem:
  
-* algorytm evolucyjny: makespan: 1297 (zwraca prawie zawsze ten sam wynik, może jakieś optimum lokalne?)
-* random: makespan: ~ 1312
-
-Benchmarks: <https://docs.google.com/document/d/17MDBkl22GAAb_Qb3xXM0eSGsVnH4iVcxAXOaNVnm5uc/edit?usp=sharing>
- 
+* Genetic Algorithm: makespan: 1297
+* random solver: makespan: ~ 1312
