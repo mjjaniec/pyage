@@ -27,13 +27,13 @@ setup(
     version="1.0",
     packages=find_packages(),
 
-    install_requires=['Pyro4(==4.17)'],
+    install_requires=[],
 
-    tests_require=['pytest'],
+    tests_require=[],
     cmdclass={'test': PyTest},
 
     # metadata for upload to PyPI
-    author='Michał Janiec, Wojciech Krzystek',
+    author='Michal Janiec, Wojciech Krzystek',
     author_email='see committers emails :-)',
     description="This is an Example Package",
     # TODO(vucalur): License
